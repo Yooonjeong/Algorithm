@@ -1,40 +1,50 @@
 import java.util.*;
 
 class Solution {
-    public boolean[] visited;
-    public Queue<int[]> queue;
+    public HashSet<String> visited;
+    public Queue<String> queue;
+    public HashSet<String> wordSet;
     public int answer = 0;
     public int solution(String begin, String target, String[] words) {
-        visited = new boolean[words.length];
-        queue = new ArrayDeque<>();
+        wordSet = new HashSet<>(Arrays.asList(words));
+        visited = new HashSet<>();
+        queue = new LinkedList<>();
         
-        bfs(begin, target, words);
-        return answer;
-    }
-    public void check(String cur, String[] words, int depth, String target){
-        for(int i=0; i<words.length; i++){
-            String word = words[i];
-            int cnt=0;
-            for(int j=0; j<word.length(); j++){
-                if(cur.charAt(j)!=word.charAt(j)){
-                    cnt++;
+        if(!wordSet.contains(target)){
+            return 0;
+        }
+        
+        queue.offer(begin);
+        int depth = 1;
+        
+        while(!queue.isEmpty()){
+            int size = queue.size();
+            for(int i=0; i<size; i++){
+                String cur = queue.poll();
+                for(String word:words){
+                    if(!visited.contains(word)&&check(cur, word)){
+                        if(word.equals(target)){
+                            return depth;
+                        }
+                        queue.offer(word);
+                        visited.add(word);
+                    }
                 }
             }
-            if(cnt==1 && !visited[i]){
-                queue.add(new int[]{i, depth+1});
-                visited[i] = true;
-            }
+            depth++;
         }
+        
+        return answer;
     }
-    public void bfs(String begin, String target, String[] words){
-        check(begin, words, 0, target);
-        while(!queue.isEmpty()){
-            int[] cur = queue.poll();
-            if(target.equals(words[cur[0]])){
-                answer = cur[1];
-                return;
+    public boolean check(String cur, String target){
+        int cnt=0;
+        for(int i=0; i<cur.length(); i++){
+            if(cur.charAt(i)!=target.charAt(i)){
+                if(++cnt>1){
+                    return false;
+                }
             }
-            check(words[cur[0]], words, cur[1], target);
         }
+        return true;
     }
 }
