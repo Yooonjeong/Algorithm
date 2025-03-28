@@ -25,9 +25,11 @@ public class Main {
 			st = new StringTokenizer(br.readLine());
 			for(int j=0; j<9; j++) {
 				board[i][j] = Integer.parseInt(st.nextToken());
-				rows[i].add(board[i][j]);
-				cols[j].add(board[i][j]);
-				boxes[getBoxIdx(i, j)].add(board[i][j]);
+				if(board[i][j] != 0) {
+					rows[i].add(board[i][j]);
+					cols[j].add(board[i][j]);
+					boxes[getBoxIdx(i, j)].add(board[i][j]);	
+				}
 			}
 		}
 		solve(0,0);
