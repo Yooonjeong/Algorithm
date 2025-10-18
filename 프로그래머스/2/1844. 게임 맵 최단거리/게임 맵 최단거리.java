@@ -29,6 +29,7 @@ class Solution {
         int curX, curY;
         while(!queue.isEmpty()){
             int[] cur = queue.poll();
+
             for(int i=0; i<4; i++){
                 curY = cur[0]+dirY[i];
                 curX = cur[1]+dirX[i];
