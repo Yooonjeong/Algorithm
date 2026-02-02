@@ -40,16 +40,13 @@ public class Main {
         Queue<int[]> queue = new LinkedList<>();
         queue.add(new int[] {0, 0, 1, 0});
 
-        int ans = Integer.MAX_VALUE;
-
         while (!queue.isEmpty()) {
             int[] cur = queue.poll();
             int cnt = cur[2];
             int curK = cur[3];
 
             if (cur[0] == n-1 && cur[1] == m-1) {
-                ans = Math.min(ans, cnt);
-                continue;
+                return cnt;
             }
 
             for (int i=0; i<4; i++) {
@@ -72,7 +69,6 @@ public class Main {
                 }
             }
         }
-        if (ans == Integer.MAX_VALUE) return -1;
-        return ans;
+        return -1;
     }
 }
