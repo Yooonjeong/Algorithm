@@ -1,6 +1,6 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -32,12 +32,12 @@ public class Main {
             return !this.robot && this.pow > 0;
         }
     }
-    
+
     private static int n, k;
-    private static List<Belt> list = new LinkedList<>();
+    private static List<Belt> list = new ArrayList<>();
     private static int level = 1;
     private static int cnt = 0;
-    
+
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
