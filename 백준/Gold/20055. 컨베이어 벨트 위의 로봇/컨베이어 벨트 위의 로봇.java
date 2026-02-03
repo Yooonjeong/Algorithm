@@ -5,10 +5,39 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
+    private static class Belt {
+        int pow;
+        boolean robot;
+
+        Belt(int pow) {
+            this.pow = pow;
+        }
+
+        public boolean existsRobot() {
+            return robot;
+        }
+
+        public void upRobot() {
+            this.robot = true;
+            this.pow--;
+
+            if (this.pow == 0) cnt++;
+        }
+
+        public void downRobot() {
+            this.robot = false;
+        }
+
+        public boolean possibleToUp() {
+            return !this.robot && this.pow > 0;
+        }
+    }
+    
     private static int n, k;
-    private static List<int[]> list = new LinkedList<>();
+    private static List<Belt> list = new LinkedList<>();
     private static int level = 1;
     private static int cnt = 0;
+    
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -18,8 +47,7 @@ public class Main {
 
         st = new StringTokenizer(br.readLine());
         for (int i=0; i<2*n; i++) {
-            int a = Integer.parseInt(st.nextToken());
-            list.add(new int[] {a, 0});
+            list.add(new Belt(Integer.parseInt(st.nextToken())));
         }
         
         while (true) {
@@ -41,14 +69,12 @@ public class Main {
     private static boolean spinRobot() {
         downRobot();
         for (int i=n-2; i>=0; i--) {
-            int[] cur = list.get(i);
-            if (cur[1] > 0) {
-                int[] next = list.get(i+1);
-                if (next[1] == 0 && next[0] > 0) {
-                    cur[1]--;
-                    next[1]++;
-                    next[0]--;
-                    if (next[0] == 0) cnt++;
+            Belt cur = list.get(i);
+            if (cur.existsRobot()) {
+                Belt next = list.get(i+1);
+                if (next.possibleToUp()) {
+                    cur.downRobot();
+                    next.upRobot();
                 }
             }
             if (cnt >= k) return true;
@@ -58,18 +84,17 @@ public class Main {
 
     private static boolean upRobot() {
         downRobot();
-        int[] first = list.get(0);
-        if (first[0] > 0) {
-            first[0]--;
-            if (first[0] == 0) cnt++;
-            first[1]++;
+        Belt first = list.get(0);
+        if (first.possibleToUp()) {
+            first.upRobot();
         }
         return cnt >= k;
     }
 
     private static void downRobot() {
-        if (list.get(n-1)[1] > 0) {
-            list.get(n-1)[1]--;
+        Belt last = list.get(n-1);
+        if (last.existsRobot()) {
+            last.downRobot();
         }
     }
 }
